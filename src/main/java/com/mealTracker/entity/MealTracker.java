@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -25,11 +26,15 @@ public class MealTracker {
 	private String trackerName;
 	
 	@OneToMany(
-		mappedBy = "mealTracker",
+		targetEntity = Meal.class,
 		cascade = CascadeType.ALL,
-		fetch = FetchType.LAZY
+		fetch = FetchType.EAGER
 	)
-	private List<Meal> meals = new ArrayList<>();
+	@JoinColumn(
+		name = "meal_fk", 
+		referencedColumnName = "id"
+	)
+	private List<Meal> meals;
 	
 	public Long getId() {
 		return id;
@@ -47,22 +52,11 @@ public class MealTracker {
 		this.trackerName = trackerName;
 	}
 	
-	public void addMeal(Meal meal) {
-		this.meals.add(meal);
-		
-		System.out.print(String.format("%s was added to your tracker.", meal.getName()));
-    System.out.println();
+	public List<Meal> getMeals(){
+		return meals;
 	}
 	
-	public void viewMeals(){
-    System.out.println("List of meals:");
-    for (Meal meal : this.meals) {
-      System.out.println(meal.getName());
-    }
-    System.out.println();
-  }
-
-  public int getMealCount(){
-    return this.meals.size();
-  }
+	public void setMeals(List<Meal> meals) {
+		this.meals = meals;
+	}
 }

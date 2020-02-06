@@ -1,6 +1,5 @@
 package com.mealTracker.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +26,15 @@ public class FoodController {
 	@Autowired
 	private FoodRepository foodRepo;
 	
+	/* Working */
 	@GetMapping(path = "/food")
 	public List<Food> getAllFoods(){
-		List<Food> foods = new ArrayList<>();
-		foodRepo.findAll().forEach(foods :: add);
-		return foods;
+		return foodRepo.findAll();
 	}
 	
 	@PostMapping(path = "/food")
 	public Food addFood(@RequestBody Food food) {
-		foodRepo.save(food);
-		return food;
+		return foodRepo.save(food);
 	}
 	
 	@PutMapping(path = "/food/{id}")

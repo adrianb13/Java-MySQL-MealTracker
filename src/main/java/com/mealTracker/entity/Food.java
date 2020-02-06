@@ -34,19 +34,10 @@ public class Food {
 	
 	private ArrayList<Category> categories = new ArrayList<>();
 	
-	@ManyToOne
-	@JoinColumn(name = "Meal_Id")
-	private Meal meal;
-	
-	Food(String name, double fat, double carbs, double protein, Category category){
-		this.name = name;
-		this.calories = setCalories(carbs, fat, protein);
-		this.fat = fat;
-		this.carbs = carbs;
-		this.protein = protein;
-		this.category = category;
+	public Long getId() {
+		return this.id;
 	}
-	
+		
 	public String getName() {
 		return this.name;
 	}

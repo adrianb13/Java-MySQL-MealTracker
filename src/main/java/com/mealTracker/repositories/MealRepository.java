@@ -10,5 +10,5 @@ import com.mealTracker.entity.MealTracker;
 
 @Repository
 public interface MealRepository extends JpaRepository<Meal, Long> {
-	public List<Meal> findByMealTracker_Id(Long id);
+	
 }

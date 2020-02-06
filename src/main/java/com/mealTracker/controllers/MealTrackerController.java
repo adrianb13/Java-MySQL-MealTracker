@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealTracker.entity.MealTracker;
+import com.mealTracker.payload.MealTrackerRequest;
+import com.mealTracker.payload.MealTrackerResponse;
 import com.mealTracker.repositories.FoodRepository;
 import com.mealTracker.repositories.MealRepository;
 import com.mealTracker.repositories.MealTrackerRepository;
@@ -29,29 +31,43 @@ public class MealTrackerController {
 
 	@Autowired
 	private MealTrackerRepository mealTrackerRepo;
+	
+	@Autowired
+	private MealRepository mealRepo;
 
+	/* Working */
 	@GetMapping(path = "/trackers")
 	public List<MealTracker> getAllMealTrackers(){
-		List<MealTracker> mealTrackers = new ArrayList<>();
-		mealTrackerRepo.findAll().forEach(mealTrackers :: add);
-		return mealTrackers;
+		return mealTrackerRepo.findAll();
+		/*
+		 * List<MealTracker> mealTrackers = new ArrayList<>();
+		 * mealTrackerRepo.findAll().forEach(mealTrackers :: add); return mealTrackers;
+		 */
+	}
+	
+	/* Working */
+	@GetMapping(path = "/trackers/meals")
+	public List<MealTrackerResponse> getMealTrackerMeals(){
+		return mealTrackerRepo.getMealTrackerMeals();
 	}
 		
+	/* Working */
 	@PostMapping(path = "/trackers")
-	public MealTracker addMealTracker(@RequestBody MealTracker mealTracker) {
-		mealTrackerRepo.save(mealTracker);
-		return mealTracker;
+	public MealTracker addMealTracker(@RequestBody MealTrackerRequest mtRequest) {
+		return mealTrackerRepo.save(mtRequest.getMealTracker());
 	}
 		
+	/* Working */
 	@PutMapping(path = "/trackers/{id}")
-	public MealTracker updateMealTracker(@PathVariable Long id, @RequestBody MealTracker mealTracker) throws BadHttpRequest {
+	public MealTracker updateMealTracker(@PathVariable Long id, @RequestBody MealTrackerRequest mtRequest) throws BadHttpRequest {
 		if(mealTrackerRepo.existsById(id)) {
-			return mealTrackerRepo.save(mealTracker);
+			return mealTrackerRepo.save(mtRequest.getMealTracker());
 		} else {
 			throw new BadHttpRequest();
 		}
 	}
 	
+	/* Working */
 	@DeleteMapping(path = "/trackers/{id}")
 	public void deleteMealTracker(@PathVariable Long id) {
 		mealTrackerRepo.deleteById(id);
