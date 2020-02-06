@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealTracker.entity.Food;
+import com.mealTracker.payload.FoodRequest;
 import com.mealTracker.repositories.FoodRepository;
 
 import javassist.tools.web.BadHttpRequest;
@@ -26,21 +27,20 @@ public class FoodController {
 	@Autowired
 	private FoodRepository foodRepo;
 	
-	/* Working */
 	@GetMapping(path = "/food")
 	public List<Food> getAllFoods(){
 		return foodRepo.findAll();
 	}
 	
 	@PostMapping(path = "/food")
-	public Food addFood(@RequestBody Food food) {
-		return foodRepo.save(food);
+	public Food addFood(@RequestBody FoodRequest fRequest) {
+		return foodRepo.save(fRequest.getFood());
 	}
 	
 	@PutMapping(path = "/food/{id}")
-	public Food updateFood(@PathVariable Long id, @RequestBody Food food) throws BadHttpRequest {
+	public Food updateFood(@PathVariable Long id, @RequestBody FoodRequest fRequest) throws BadHttpRequest {
 		if(foodRepo.existsById(id)) {
-			return foodRepo.save(food);
+			return foodRepo.save(fRequest.getFood());
 		} else {
 			throw new BadHttpRequest();
 		}

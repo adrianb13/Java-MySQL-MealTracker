@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealTracker.entity.Meal;
+import com.mealTracker.payload.MealRequest;
 import com.mealTracker.repositories.MealRepository;
 
 import javassist.tools.web.BadHttpRequest;
@@ -26,29 +27,25 @@ public class MealController {
 	@Autowired
 	private MealRepository mealRepo;
 	
-	/* Working */
 	@GetMapping(path = "/meals")
 	public List<Meal> getAllMeals(){
 		return mealRepo.findAll();
 	}
 	
-	/* Working */
 	@PostMapping(path = "/meals")
-	public Meal addMeal(@RequestBody Meal meal) {
-		return mealRepo.save(meal);
+	public Meal addMeal(@RequestBody MealRequest mRequest) {
+		return mealRepo.save(mRequest.getMeal());
 	}
 	
-	/* Working */
 	@PutMapping(path = "/meals/{id}")
-	public Meal updateMeal(@PathVariable Long id, @RequestBody Meal meal) throws BadHttpRequest {
+	public Meal updateMeal(@PathVariable Long id, @RequestBody MealRequest mRequest) throws BadHttpRequest {
 		if(mealRepo.existsById(id)) {
-			return mealRepo.save(meal);
+			return mealRepo.save(mRequest.getMeal());
 		} else {
 			throw new BadHttpRequest();
 		}
 	}
 	
-	/* Working */
 	@DeleteMapping(path = "/meals/{id}")
 	public void deleteMeal(@PathVariable Long id) {
 		mealRepo.deleteById(id);

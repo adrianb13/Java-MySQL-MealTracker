@@ -1,9 +1,6 @@
 package com.mealTracker.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,7 +32,6 @@ public class MealTrackerController {
 	@Autowired
 	private MealRepository mealRepo;
 
-	/* Working */
 	@GetMapping(path = "/trackers")
 	public List<MealTracker> getAllMealTrackers(){
 		return mealTrackerRepo.findAll();
@@ -45,19 +41,16 @@ public class MealTrackerController {
 		 */
 	}
 	
-	/* Working */
 	@GetMapping(path = "/trackers/meals")
 	public List<MealTrackerResponse> getMealTrackerMeals(){
 		return mealTrackerRepo.getMealTrackerMeals();
 	}
 		
-	/* Working */
 	@PostMapping(path = "/trackers")
 	public MealTracker addMealTracker(@RequestBody MealTrackerRequest mtRequest) {
 		return mealTrackerRepo.save(mtRequest.getMealTracker());
 	}
 		
-	/* Working */
 	@PutMapping(path = "/trackers/{id}")
 	public MealTracker updateMealTracker(@PathVariable Long id, @RequestBody MealTrackerRequest mtRequest) throws BadHttpRequest {
 		if(mealTrackerRepo.existsById(id)) {
@@ -67,7 +60,6 @@ public class MealTrackerController {
 		}
 	}
 	
-	/* Working */
 	@DeleteMapping(path = "/trackers/{id}")
 	public void deleteMealTracker(@PathVariable Long id) {
 		mealTrackerRepo.deleteById(id);
