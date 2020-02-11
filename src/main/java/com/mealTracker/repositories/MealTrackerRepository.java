@@ -12,6 +12,6 @@ import com.mealTracker.payload.MealTrackerResponse;
 @Repository
 public interface MealTrackerRepository extends JpaRepository<MealTracker, Long> {
 	
-	@Query("SELECT new com.mealTracker.payload.MealTrackerResponse(t.trackerName, m.mealName) FROM MealTracker t JOIN t.meals m")
+	@Query("SELECT new com.mealTracker.payload.MealTrackerResponse(t.name, m.name) FROM MealTracker t JOIN t.meals m")
 	public List<MealTrackerResponse> getMealTrackerMeals();
 }

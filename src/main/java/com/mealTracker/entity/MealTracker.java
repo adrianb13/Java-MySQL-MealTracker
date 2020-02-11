@@ -1,6 +1,5 @@
 package com.mealTracker.entity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -16,14 +15,14 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table (name = "mealtrackers")
-public class MealTracker {
+public class MealTracker extends DateAudit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@NotBlank
-	private String trackerName;
+	private String name;
 	
 	@OneToMany(
 		targetEntity = Meal.class,
@@ -44,12 +43,12 @@ public class MealTracker {
 		this.id = id;
 	}
 
-	public String getTrackerName() {
-		return trackerName;
+	public String getName() {
+		return name;
 	}
 
-	public void setTrackerName(String trackerName) {
-		this.trackerName = trackerName;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	public List<Meal> getMeals(){

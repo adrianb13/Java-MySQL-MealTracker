@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.math.BigDecimal;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 
 @Entity
 @Table (name = "foods")
-public class Food {
+public class Food extends DateAudit {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,11 +33,11 @@ public class Food {
 	private ArrayList<Category> categories = new ArrayList<>();
 	
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 		
 	public String getName() {
-		return this.name;
+		return name;
 	}
 	
 	public void setName(String name) {
@@ -47,20 +45,20 @@ public class Food {
 	}
 	
 	public double getCalories() {
-		return this.calories;
+		return calories;
 	}
 	
-	public double setCalories(double fat, double carbs, double protein) {
-		double total = (9 * fat) + (4 * carbs) + (4 * protein);
-		if(total > 0) {
-			return round(total, 1);
-		} else {
-			return 0;
-		}
+	public void setCalories(double calories) {
+		this.calories = calories;
 	}
+	/*
+	 * public double setCalories(double fat, double carbs, double protein) { double
+	 * total = (9 * fat) + (4 * carbs) + (4 * protein); if(total > 0) { return
+	 * round(total, 1); } else { return 0; } }
+	 */
 	
 	public double getFat() {
-		return this.fat;
+		return fat;
 	}
 	
 	public void setFat(double fat) {
@@ -68,7 +66,7 @@ public class Food {
 	}
 	
 	public double getCarbs() {
-		return this.carbs;
+		return carbs;
 	}
 	
 	public void setCarbs(double carbs) {
@@ -76,7 +74,7 @@ public class Food {
 	}
 	
 	public double getProtein() {
-		return this.protein;
+		return protein;
 	}
 	
 	public void setProtein(double protein) {
@@ -84,7 +82,7 @@ public class Food {
 	}
 	
 	public Category getCategory() {
-		return this.category;
+		return category;
 	}
 	
 	public void setCategory(Category category) {

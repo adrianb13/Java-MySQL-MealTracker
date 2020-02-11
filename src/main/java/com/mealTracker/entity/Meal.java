@@ -14,30 +14,44 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "meals")
-public class Meal {
+public class Meal extends DateAudit {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private String mealName;
+	private String name;
 
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name="mealTracker_id", nullable=false) private MealTracker
+	 * mealTracker;
+	 */
+	
 	@OneToMany(targetEntity = Food.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "food_fk", referencedColumnName = "id")
 	private List<Food> foods;
 
 	public Long getId() {
-		return this.id;
+		return id;
 	}
 
-	public String getMealName() {
-		return mealName;
+	public String getName() {
+		return name;
 	}
 
-	public void setMealName(String mealName) {
-		this.mealName = mealName;
+	public void setName(String name) {
+		this.name = name;
 	}
-
+	
+	/*
+	 * public MealTracker getMealTracker() { return mealTracker; }
+	 * 
+	 * public void setMealName(MealTracker mealTracker) { this.mealTracker =
+	 * mealTracker; }
+	 */
+	
 	public List<Food> getFood() {
 		return foods;
 	}
