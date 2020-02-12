@@ -1,6 +1,7 @@
 package com.mealTracker.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mealTracker.entity.Food;
 import com.mealTracker.payload.FoodRequest;
 import com.mealTracker.repositories.FoodRepository;
+import com.mealTracker.repositories.MealRepository;
 
 import javassist.tools.web.BadHttpRequest;
 
@@ -27,26 +29,35 @@ public class FoodController {
 	@Autowired
 	private FoodRepository foodRepo;
 	
-	@GetMapping(path = "/food")
-	public List<Food> getAllFoods(){
-		return foodRepo.findAll();
+	@Autowired
+	private MealRepository mealRepo;
+	
+	@GetMapping(path = "/meals/{mealId}/food")
+	public List<Food> getAllFoods(@PathVariable (value = "mealId") Long mealId){
+		return foodRepo.findByMealId(mealId);
 	}
 	
-	@PostMapping(path = "/food")
-	public Food addFood(@RequestBody FoodRequest fRequest) {
-		return foodRepo.save(fRequest.getFood());
+	@PostMapping(path = "/meals/{mealId}/food/")
+	public Optional<Food> addFood(@PathVariable (value = "mealId") Long mealId,
+											@RequestBody Food food) {
+		return mealRepo.findById(mealId).map(meal -> {
+			food.setMeal(meal);
+			return foodRepo.save(food);
+		});
 	}
 	
-	@PutMapping(path = "/food/{id}")
-	public Food updateFood(@PathVariable Long id, @RequestBody FoodRequest fRequest) throws BadHttpRequest {
-		if(foodRepo.existsById(id)) {
-			return foodRepo.save(fRequest.getFood());
+	@PutMapping(path = "/meals/{mealId}/food/{foodId}")
+	public Food updateFood(@PathVariable (value = "mealId") Long mealId,
+												@PathVariable (value ="foodId") Long foodId, 
+												@RequestBody Food food) throws BadHttpRequest {
+		if(foodRepo.existsById(foodId)) {
+			return foodRepo.save(food);
 		} else {
 			throw new BadHttpRequest();
 		}
 	}
 	
-	@DeleteMapping(path = "/food/{id}")
+	@DeleteMapping(path = "/meals/{mealId}/food/{foodId}")
 	public void deleteFood(@PathVariable Long id) {
 		foodRepo.deleteById(id);
 	}

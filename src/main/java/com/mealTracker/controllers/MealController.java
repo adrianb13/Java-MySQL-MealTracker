@@ -1,6 +1,7 @@
 package com.mealTracker.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealTracker.entity.Meal;
+import com.mealTracker.entity.MealTracker;
 import com.mealTracker.payload.MealRequest;
 import com.mealTracker.repositories.MealRepository;
+import com.mealTracker.repositories.MealTrackerRepository;
 
 import javassist.tools.web.BadHttpRequest;
 
@@ -27,27 +30,42 @@ public class MealController {
 	@Autowired
 	private MealRepository mealRepo;
 	
+	@Autowired 
+	private MealTrackerRepository mealTrackerRepo;
+	
 	@GetMapping(path = "/meals")
 	public List<Meal> getAllMeals(){
 		return mealRepo.findAll();
 	}
 	
-	@PostMapping(path = "/meals")
-	public Meal addMeal(@RequestBody MealRequest mRequest) {
-		return mealRepo.save(mRequest.getMeal());
+	@GetMapping(path = "/trackers/{trackerId}/meals")
+	public List<Meal> getAllMealsByMealTrackerId(@PathVariable (value = "trackerId") Long mealTrackerId){
+		return mealRepo.findByMealTrackerId(mealTrackerId);
 	}
 	
-	@PutMapping(path = "/meals/{id}")
-	public Meal updateMeal(@PathVariable Long id, @RequestBody MealRequest mRequest) throws BadHttpRequest {
-		if(mealRepo.existsById(id)) {
-			return mealRepo.save(mRequest.getMeal());
+	@PostMapping(path = "/trackers/{trackerId}/meals")
+	public Optional<Meal> addMeal(@PathVariable (value = "trackerId") Long mealTrackerId, 
+																@RequestBody Meal meal) {
+		return mealTrackerRepo.findById(mealTrackerId).map(tracker -> {
+			meal.setMealTracker(tracker);
+			return mealRepo.save(meal); 
+		});
+				
+	}
+	
+	@PutMapping(path = "/trackers/{trackerId}/meals/{mealId}")
+	public Meal updateMeal(@PathVariable (value = "trackerId") Long mealTrackerId, 
+												@PathVariable (value = "mealId") Long mealId,
+												@RequestBody Meal meal) throws BadHttpRequest {
+		if(mealRepo.existsById(mealId)) {
+			return mealRepo.save(meal);
 		} else {
 			throw new BadHttpRequest();
 		}
 	}
 	
-	@DeleteMapping(path = "/meals/{id}")
-	public void deleteMeal(@PathVariable Long id) {
-		mealRepo.deleteById(id);
+	@DeleteMapping(path = "/trackers/{trackerId}/meals/{mealId}")
+	public void deleteMeal(@PathVariable Long mealId) {
+		mealRepo.deleteById(mealId);
 	}
 }

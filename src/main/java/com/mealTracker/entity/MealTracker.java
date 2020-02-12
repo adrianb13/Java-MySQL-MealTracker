@@ -8,7 +8,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -25,13 +24,10 @@ public class MealTracker extends DateAudit {
 	private String name;
 	
 	@OneToMany(
+		mappedBy = "mealTracker",
 		targetEntity = Meal.class,
 		cascade = CascadeType.ALL,
 		fetch = FetchType.EAGER
-	)
-	@JoinColumn(
-		name = "meal_fk", 
-		referencedColumnName = "id"
 	)
 	private List<Meal> meals;
 	

@@ -9,8 +9,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "meals")
@@ -21,18 +25,20 @@ public class Meal extends DateAudit {
 	private Long id;
 
 	private String name;
-
-	/*
-	 * @ManyToOne
-	 * 
-	 * @JoinColumn(name="mealTracker_id", nullable=false) private MealTracker
-	 * mealTracker;
-	 */
 	
-	@OneToMany(targetEntity = Food.class, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "food_fk", referencedColumnName = "id")
+	@OneToMany(
+		mappedBy = "meal", 
+		targetEntity = Food.class,
+		cascade = CascadeType.ALL, 
+		fetch = FetchType.LAZY)
 	private List<Food> foods;
 
+
+	@ManyToOne
+	@JoinColumn(name="mealTracker_id", nullable=false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private MealTracker mealTracker;
+	
 	public Long getId() {
 		return id;
 	}
@@ -45,19 +51,16 @@ public class Meal extends DateAudit {
 		this.name = name;
 	}
 	
-	/*
-	 * public MealTracker getMealTracker() { return mealTracker; }
-	 * 
-	 * public void setMealName(MealTracker mealTracker) { this.mealTracker =
-	 * mealTracker; }
-	 */
-	
 	public List<Food> getFood() {
 		return foods;
 	}
 
 	public void setFood(List<Food> foods) {
 		this.foods = foods;
+	}
+		
+	public void setMealTracker(MealTracker mealTracker) {
+		this.mealTracker = mealTracker;
 	}
 
 	/*

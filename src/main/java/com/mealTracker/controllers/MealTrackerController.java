@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mealTracker.entity.MealTracker;
-import com.mealTracker.payload.MealTrackerRequest;
 import com.mealTracker.payload.MealTrackerResponse;
-import com.mealTracker.repositories.FoodRepository;
 import com.mealTracker.repositories.MealRepository;
 import com.mealTracker.repositories.MealTrackerRepository;
 
@@ -29,9 +27,6 @@ public class MealTrackerController {
 	@Autowired
 	private MealTrackerRepository mealTrackerRepo;
 	
-	@Autowired
-	private MealRepository mealRepo;
-
 	@GetMapping(path = "/trackers")
 	public List<MealTracker> getAllMealTrackers(){
 		return mealTrackerRepo.findAll();
@@ -47,14 +42,14 @@ public class MealTrackerController {
 	}
 		
 	@PostMapping(path = "/trackers")
-	public MealTracker addMealTracker(@RequestBody MealTrackerRequest mtRequest) {
-		return mealTrackerRepo.save(mtRequest.getMealTracker());
+	public MealTracker addMealTracker(@RequestBody MealTracker mtRequest) {
+		return mealTrackerRepo.save(mtRequest);
 	}
 		
 	@PutMapping(path = "/trackers/{id}")
-	public MealTracker updateMealTracker(@PathVariable Long id, @RequestBody MealTrackerRequest mtRequest) throws BadHttpRequest {
+	public MealTracker updateMealTracker(@PathVariable Long id, @RequestBody MealTracker mtRequest) throws BadHttpRequest {
 		if(mealTrackerRepo.existsById(id)) {
-			return mealTrackerRepo.save(mtRequest.getMealTracker());
+			return mealTrackerRepo.save(mtRequest);
 		} else {
 			throw new BadHttpRequest();
 		}

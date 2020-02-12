@@ -4,7 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,6 +37,11 @@ public class Food extends DateAudit {
 	
 	private ArrayList<Category> categories = new ArrayList<>();
 	
+	@ManyToOne
+	@JoinColumn(name = "meal_id", nullable = false)
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Meal meal;
+	
 	public Long getId() {
 		return id;
 	}
@@ -56,7 +66,7 @@ public class Food extends DateAudit {
 	 * total = (9 * fat) + (4 * carbs) + (4 * protein); if(total > 0) { return
 	 * round(total, 1); } else { return 0; } }
 	 */
-	
+
 	public double getFat() {
 		return fat;
 	}
@@ -102,4 +112,8 @@ public class Food extends DateAudit {
       throw new IllegalArgumentException();
     }
   }
+
+	public void setMeal(Meal meal) {
+		this.meal = meal;
+	}
 }
