@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,11 @@ public class MealController {
 	@Autowired 
 	private MealTrackerRepository mealTrackerRepo;
 	
+	@GetMapping(path = "/meals")
+	public List<Meal> getAllMeals(){
+		return mealRepo.findAll();
+	}
+	
 	@GetMapping(path = "/meals/{trackerId}")
 	public List<Meal> getAllMealsByMealTrackerId(@PathVariable (value = "trackerId") Long mealTrackerId){
 		return mealRepo.findByMealTrackerId(mealTrackerId);
@@ -45,7 +51,6 @@ public class MealController {
 			meal.setMealTracker(tracker);
 			return mealRepo.save(meal); 
 		});
-				
 	}
 	
 	@PutMapping(path = "/meals/{trackerId}/{mealId}")
@@ -59,8 +64,18 @@ public class MealController {
 		}
 	}
 	
-	@DeleteMapping(path = "/meals/{id}")
-	public void deleteMeal(@PathVariable Long id) {
-		mealRepo.deleteById(id);
+	@Transactional
+	@DeleteMapping(path = "/meals/{mealId}")
+	public void deleteMeal(@PathVariable (value = "mealId") Long mealId) {
+		mealRepo.deleteById(mealId);
 	}
+	
+	/*
+	 * @DeleteMapping(path = "/meals/{trackerId}/{mealId}") public Optional<Object>
+	 * deleteMeal(@PathVariable (value = "trackerId") Long mealTrackerId,
+	 * 
+	 * @PathVariable (value = "mealId") Long mealId) { return
+	 * mealRepo.findByIdAndMealTrackerId(mealId, mealTrackerId).map(meal -> {
+	 * mealRepo.delete(meal); return ResponseEntity.ok(meal); }); }
+	 */
 }

@@ -17,7 +17,11 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "meals")
@@ -40,7 +44,6 @@ public class Meal extends DateAudit {
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="mealTracker_id", nullable=false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private MealTracker mealTracker;
 	
 	public Long getId() {
@@ -55,16 +58,21 @@ public class Meal extends DateAudit {
 		this.name = name;
 	}
 	
-	public List<Food> getFood() {
+	public List<Food> getFoods() {
 		return foods;
 	}
 
-	public void setFood(List<Food> foods) {
+	public void setFoods(List<Food> foods) {
 		this.foods = foods;
 	}
 		
 	public void setMealTracker(MealTracker mealTracker) {
 		this.mealTracker = mealTracker;
+	}
+	
+	public void removeMealTracker() {
+		this.mealTracker.removeMeal(this);
+		this.mealTracker = null;
 	}
 
 	/*

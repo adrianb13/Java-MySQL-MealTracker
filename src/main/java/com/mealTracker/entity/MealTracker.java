@@ -25,11 +25,12 @@ public class MealTracker extends DateAudit {
 	@NotBlank
 	private String name;
 	
+
 	@JsonManagedReference
 	@OneToMany(
 		mappedBy = "mealTracker",
 		targetEntity = Meal.class,
-		cascade = CascadeType.ALL,
+		cascade=CascadeType.REMOVE,
 		fetch = FetchType.EAGER
 	)
 	private List<Meal> meals;
@@ -56,5 +57,9 @@ public class MealTracker extends DateAudit {
 	
 	public void setMeals(List<Meal> meals) {
 		this.meals = meals;
+	}
+	
+	public void removeMeal(Meal meal) {
+		this.meals.remove(meal);
 	}
 }
