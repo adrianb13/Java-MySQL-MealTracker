@@ -33,17 +33,12 @@ public class MealController {
 	@Autowired 
 	private MealTrackerRepository mealTrackerRepo;
 	
-	@GetMapping(path = "/meals")
-	public List<Meal> getAllMeals(){
-		return mealRepo.findAll();
-	}
-	
-	@GetMapping(path = "/trackers/{trackerId}/meals")
+	@GetMapping(path = "/meals/{trackerId}")
 	public List<Meal> getAllMealsByMealTrackerId(@PathVariable (value = "trackerId") Long mealTrackerId){
 		return mealRepo.findByMealTrackerId(mealTrackerId);
 	}
 	
-	@PostMapping(path = "/trackers/{trackerId}/meals")
+	@PostMapping(path = "/meals/{trackerId}")
 	public Optional<Meal> addMeal(@PathVariable (value = "trackerId") Long mealTrackerId, 
 																@RequestBody Meal meal) {
 		return mealTrackerRepo.findById(mealTrackerId).map(tracker -> {
@@ -53,7 +48,7 @@ public class MealController {
 				
 	}
 	
-	@PutMapping(path = "/trackers/{trackerId}/meals/{mealId}")
+	@PutMapping(path = "/meals/{trackerId}/{mealId}")
 	public Meal updateMeal(@PathVariable (value = "trackerId") Long mealTrackerId, 
 												@PathVariable (value = "mealId") Long mealId,
 												@RequestBody Meal meal) throws BadHttpRequest {
@@ -64,8 +59,8 @@ public class MealController {
 		}
 	}
 	
-	@DeleteMapping(path = "/trackers/{trackerId}/meals/{mealId}")
-	public void deleteMeal(@PathVariable Long mealId) {
-		mealRepo.deleteById(mealId);
+	@DeleteMapping(path = "/meals/{id}")
+	public void deleteMeal(@PathVariable Long id) {
+		mealRepo.deleteById(id);
 	}
 }

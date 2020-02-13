@@ -16,6 +16,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "meals")
 public class Meal extends DateAudit {
@@ -26,6 +29,7 @@ public class Meal extends DateAudit {
 
 	private String name;
 	
+	@JsonManagedReference
 	@OneToMany(
 		mappedBy = "meal", 
 		targetEntity = Food.class,
@@ -33,7 +37,7 @@ public class Meal extends DateAudit {
 		fetch = FetchType.LAZY)
 	private List<Food> foods;
 
-
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="mealTracker_id", nullable=false)
 	@OnDelete(action = OnDeleteAction.CASCADE)

@@ -14,6 +14,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class DateAudit implements Serializable {
@@ -26,16 +28,16 @@ public abstract class DateAudit implements Serializable {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	public String getCreatedAt() {
-		return DateFormat(createdAt);
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 	
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 	
-	public String getUpdatedAt() {
-		return DateFormat(updatedAt);
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
 	}
 	
 	public void setUpdatedAt(LocalDateTime updatedAt) {
@@ -43,7 +45,7 @@ public abstract class DateAudit implements Serializable {
 	}
 	
 	private String DateFormat(LocalDateTime time) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
 		String formatDateTime = time.format(formatter);
 		return formatDateTime;
 	}

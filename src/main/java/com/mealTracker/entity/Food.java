@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -37,9 +39,9 @@ public class Food extends DateAudit {
 	
 	private ArrayList<Category> categories = new ArrayList<>();
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "meal_id", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Meal meal;
 	
 	public Long getId() {

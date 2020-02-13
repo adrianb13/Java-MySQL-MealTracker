@@ -32,12 +32,12 @@ public class FoodController {
 	@Autowired
 	private MealRepository mealRepo;
 	
-	@GetMapping(path = "/meals/{mealId}/food")
+	@GetMapping(path = "/food/{mealId}")
 	public List<Food> getAllFoods(@PathVariable (value = "mealId") Long mealId){
 		return foodRepo.findByMealId(mealId);
 	}
 	
-	@PostMapping(path = "/meals/{mealId}/food/")
+	@PostMapping(path = "/food/{mealId}")
 	public Optional<Food> addFood(@PathVariable (value = "mealId") Long mealId,
 											@RequestBody Food food) {
 		return mealRepo.findById(mealId).map(meal -> {
@@ -46,7 +46,7 @@ public class FoodController {
 		});
 	}
 	
-	@PutMapping(path = "/meals/{mealId}/food/{foodId}")
+	@PutMapping(path = "/food/{mealId}/{foodId}")
 	public Food updateFood(@PathVariable (value = "mealId") Long mealId,
 												@PathVariable (value ="foodId") Long foodId, 
 												@RequestBody Food food) throws BadHttpRequest {
@@ -57,8 +57,8 @@ public class FoodController {
 		}
 	}
 	
-	@DeleteMapping(path = "/meals/{mealId}/food/{foodId}")
-	public void deleteFood(@PathVariable Long id) {
+	@DeleteMapping(path = "/food/{foodId}")
+	public void deleteFood(@PathVariable (value ="foodId") Long id) {
 		foodRepo.deleteById(id);
 	}
 }
