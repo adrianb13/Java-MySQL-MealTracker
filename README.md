@@ -3,7 +3,7 @@ Back-end for React, Redux, Spring Boot, Java & MySQL application - Meal Tracker.
 
 Front-end Repo: https://github.com/adrianb13/ReactRedux-MealTracker
 
-#About
+## About
 
 This is the back-end of a React, Redux, Spring Boot, Java & MySQL application.  The application was created to help a user keep track of their daily nutritional intake.  People try to stay healthy and eat the right things but it's hard to keep track of what you are eating.  This application helps you with that.  
 
