@@ -23,7 +23,7 @@ import com.mealTracker.repositories.MealTrackerRepository;
 
 import javassist.tools.web.BadHttpRequest;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://adrianb13.github.io/ReactRedux-MealTracker/", "https://adrianb13.github.io", "https://mealtracker-react.herokuapp.com"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:4200", "https://adrianb13.github.io/ReactRedux-MealTracker/", "https://adrianb13.github.io", "https://mealtracker-react.herokuapp.com", "https://mealtracker-angular.herokuapp.com"})
 @RestController
 @RequestMapping("/api")
 public class MealController {
